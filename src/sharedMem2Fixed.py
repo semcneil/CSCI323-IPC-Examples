@@ -14,7 +14,7 @@ from multiprocessing.shared_memory import SharedMemory
 
 def writer(shm_name):
     shm = SharedMemory(name=shm_name)
-    data = b"Hello from Writer process with dynamic length!"
+    data = b"Hello from Writer process with dynamic length! and now there is more"
     data_length = len(data)
 
     # Store length in the first 4 bytes (big-endian integer)

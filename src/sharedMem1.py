@@ -15,7 +15,7 @@ from multiprocessing.shared_memory import SharedMemory
 def writer(shm_name):
     # Attach to existing shared memory segment
     shm = SharedMemory(name=shm_name)
-    data = b"Hello from Writer process!"
+    data = b"Hello from Writer process!" + b"\x00" + b" and here is more:"
     shm.buf[: len(data)] = data
     shm.close()
 
@@ -23,7 +23,8 @@ def writer(shm_name):
 def reader(shm_name):
     shm = SharedMemory(name=shm_name)
     time.sleep(0.1)  # Brief wait for writer to write
-    message = bytes(shm.buf[:26]).decode("utf-8")
+    # message = bytes(shm.buf[:43]).decode("utf-8")
+    message = bytes(shm.buf).decode("utf-8")
     print(f"[Shared Memory] Reader received: {message}")
     shm.close()
 
@@ -31,6 +32,8 @@ def reader(shm_name):
 if __name__ == "__main__":
     # Create a 64-byte shared memory block
     shm = SharedMemory(create=True, size=64)
+
+    print(f"the memory name is {shm.name}")
 
     p1 = Process(target=writer, args=(shm.name,))
     p2 = Process(target=reader, args=(shm.name,))

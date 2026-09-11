@@ -15,7 +15,7 @@ from multiprocessing.shared_memory import SharedMemory
 def writer(shm_name):
     shm = SharedMemory(name=shm_name)
     # Append null byte delimiter
-    data = b"Hello from Writer!" + b"\x00"
+    data = b"Hello from Writer! and now there is more text" + b"\x00"
     shm.buf[: len(data)] = data
     shm.close()
 

@@ -7,12 +7,14 @@ This is an example of IPC.
 | Date: 2026 September 11
 """
 
+import time
 from multiprocessing import Process, Queue
 
 
 def producer(queue):
     items = ["item_1", "item_2", "item_3"]
     for item in items:
+        time.sleep(1)
         queue.put(item)
     queue.put(None)  # Sentinel value to signal completion
 
